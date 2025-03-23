@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -30,6 +30,10 @@ app.use(
 app.use(express.static("public"));
 
 app.use(cookieparser());
+
+import UserRouter from "./routes/user.routes.js";
+
+app.use("/api/v1/user", UserRouter);
 
 app.use(ErrorHandlerMiddleWare);
 

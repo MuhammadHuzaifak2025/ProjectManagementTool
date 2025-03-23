@@ -33,14 +33,7 @@ const userSchema = new Schema(
       required: false,
       default: "",
     },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
-    pin: {
-      type: String,
-      default: "",
-    },
+
     task: {
       type: Array,
       of: Schema.Types.ObjectId,
