@@ -122,17 +122,6 @@ const getUser = asynchandler(async (req, res, next) => {
   }
 });
 
-const test = asynchandler(async (req, res, next) => {
-  try {
-    res.clearCookie("access-token");
-    return res.status(200).json(
-      new ApiResponse(200, {
-        message: "Test",
-      })
-    );
-  } catch (error) {
-    next(error);
-  }
-});
 
-export { register, login, logout, getUser, test };
+
+export { register, login, logout, getUser };
