@@ -36,5 +36,4 @@ import UserRouter from "./routes/user.routes.js";
 app.use("/api/v1/user", UserRouter);
 
 app.use(ErrorHandlerMiddleWare);
-
 export default app;

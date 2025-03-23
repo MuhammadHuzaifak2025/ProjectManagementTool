@@ -7,7 +7,8 @@ import {
   login,
   logout,
   register,
- 
+  updatePassword,
+  updateUser,
 } from "../controllers/user.controller.js";
 
 const UserRouter = Router();
@@ -55,5 +56,40 @@ UserRouter.post(
 UserRouter.post("/logout", authorize, logout);
 UserRouter.get("/", authorize, getUser);
 
+UserRouter.put(
+  "/",
+  authorize,
+  [
+    body("name")
+      .isString()
+      .withMessage("Name must be a string")
+      .isLength({ min: 3, max: 50 })
+      .withMessage("Name must be between 3 and 50 characters"),
+    body("email").isEmail().withMessage("Invalid email format"),
+  ],
+  updateUser
+);
+
+UserRouter.put(
+  "/password",
+  authorize,
+  [
+    body("oldPassword")
+      .isString()
+      .withMessage("Password must be a string")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters long"),
+    body("newPassword")
+      .isString()
+      .withMessage("Password must be a string")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters long")
+      .matches(/\d/)
+      .withMessage("Password must contain at least one number")
+      .matches(/[A-Z]/)
+      .withMessage("Password must contain at least one uppercase letter"),
+  ],
+  updatePassword
+);
 
 export default UserRouter;
