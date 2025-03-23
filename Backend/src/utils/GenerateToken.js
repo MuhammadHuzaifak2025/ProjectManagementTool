@@ -24,6 +24,7 @@ const GenerateToken = (user) => {
       expiresIn: "7d",
     }
   );
+
   return [access_token, refresh_token];
 };
 

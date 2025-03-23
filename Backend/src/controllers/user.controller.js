@@ -19,7 +19,8 @@ const register = asynchandler(async (req, res, next) => {
   try {
     const { email, password, name } = req.body;
     const errors = validationResult(req);
-    if (errors.isEmpty()) {
+    if (!errors.isEmpty()) {
+      //   console.log(err_new);
       const err_new = new ApiError(
         400,
         errors
@@ -27,7 +28,6 @@ const register = asynchandler(async (req, res, next) => {
           .map((err) => err.msg)
           .join(", ")
       );
-      print(err_new);
       throw err_new;
     }
     const user = await User.findOne({ email: email });
@@ -52,4 +52,87 @@ const register = asynchandler(async (req, res, next) => {
   }
 });
 
-export { register };
+const login = asynchandler(async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const err_new = new ApiError(
+        400,
+        errors
+          .array()
+          .map((err) => err.msg)
+          .join(", ")
+      );
+      throw err_new;
+    }
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      throw new ApiError(400, "User not found");
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new ApiError(400, "Invalid credentials");
+    }
+
+    const [token, refresh_token] = GenerateToken(user);
+    user.refresh_token = refresh_token;
+    await user.save();
+
+    res.cookie("access-token", token, { httpOnly: true });
+    res.cookie("refresh-token", refresh_token, { httpOnly: true });
+    user.password = undefined;
+    user.refresh_token = undefined;
+    return res.status(200).json(
+      new ApiResponse(200, {
+        message: "User logged in successfully",
+        data: user,
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+
+const logout = asynchandler(async (req, res, next) => {
+  try {
+    res.clearCookie("access-token");
+    res.clearCookie("refresh-token");
+    return res.status(200).json(
+      new ApiResponse(200, {
+        message: "User logged out successfully",
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+
+const getUser = asynchandler(async (req, res, next) => {
+  try {
+    const user = req.user;
+    return res.status(200).json(
+      new ApiResponse(200, {
+        message: "User details",
+        data: user,
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+
+const test = asynchandler(async (req, res, next) => {
+  try {
+    res.clearCookie("access-token");
+    return res.status(200).json(
+      new ApiResponse(200, {
+        message: "Test",
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+});
+
+export { register, login, logout, getUser, test };
