@@ -1,25 +1,17 @@
-import pg from "pg";
-const { Pool } = pg;
+import mongoose from "mongoose";
 
-const pool = new Pool({
-  host: process.env.HOST,
-  user: process.env.USER,
-  database: process.env.DATABASENAME,
-  password: process.env.PASSWORD,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
-
-const connectDb = async () => {
+const connectDB = async () => {
   try {
-    const client = await pool.connect();
-    console.log("Connected to the database");
-    return client;
+    const connectionInstance = await mongoose.connect(
+      `${process.env.MONGODB_URI}/${process.env.DATABASENAME}`
+    );
+    console.log(
+      `\n MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`
+    );
   } catch (error) {
-    console.log("Error connecting to the database: ", error);
-    throw error;
+    console.log("MONGODB connection FAILED ", error);
+    process.exit(1);
   }
 };
 
-export { connectDb };
+export default connectDB;
