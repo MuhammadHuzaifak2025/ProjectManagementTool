@@ -1,3 +1,4 @@
+import { check } from "express-validator";
 import mongoose, { Schema } from "mongoose";
 
 const taskSchema = new Schema(
@@ -24,10 +25,10 @@ const taskSchema = new Schema(
     due_date: {
       type: Date,
       required: false,
+      check: (val) => val > Date.now(),
     },
   },
   { timestamps: true }
 );
 
 export const Task = mongoose.model("Task", taskSchema);
-

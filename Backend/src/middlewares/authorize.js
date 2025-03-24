@@ -26,7 +26,7 @@ export const authorize = async (req, res, next) => {
         return next(new ApiError(404, "User not found"));
       }
       req.user = user;
-      console.log("REQ FORWARDED");
+    //   console.log("REQ FORWARDED");
       return next();
     }
 

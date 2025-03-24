@@ -32,8 +32,10 @@ app.use(express.static("public"));
 app.use(cookieparser());
 
 import UserRouter from "./routes/user.routes.js";
+import TaskRouter from "./routes/task.routes.js";
 
 app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/task", TaskRouter);
 
 app.use(ErrorHandlerMiddleWare);
 export default app;

@@ -108,7 +108,7 @@ const getUser = asynchandler(async (req, res, next) => {
 
 const updateUser = asynchandler(async (req, res, next) => {
   const user = req.user;
-  console.log("user");
+  // console.log("user");
 
   const { name, email } = req.body;
   const errors = validationResult(req);
