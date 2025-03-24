@@ -16,7 +16,7 @@ export const authorize = async (req, res, next) => {
     }
 
     if (!token && !refresh_token) {
-      return next(new ApiError(401, "Token not found")); 
+      return next(new ApiError(401, "User Session Expired, Please Login")); 
     }
 
     if (token) {
