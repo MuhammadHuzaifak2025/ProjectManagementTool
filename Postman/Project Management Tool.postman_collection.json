@@ -1,0 +1,397 @@
+{
+	"info": {
+		"_postman_id": "f98dbbcb-3eaf-40a1-ae0c-74e3fcd66a40",
+		"name": "Project Management Tool",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28843396",
+		"_collection_link": "https://muhammad-huzaifa-team.postman.co/workspace/Muhammad-Huzaifa-Team~7f478994-2666-4d62-81e6-df24de711e32/collection/28843396-f98dbbcb-3eaf-40a1-ae0c-74e3fcd66a40?action=share&source=collection_link&creator=28843396"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Test Case 01: Correct Details - Pass\r\n{\r\n    \"email\":\"mhuzaifa91@gmail.com\",\r\n    \"password\":\"Huzaifa1\",\r\n    \"name\":\"23aljdA\"\r\n}\r\n// Test Case 02: No Details input - Fail\r\n// {\r\n//     \r\n// }\r\n// Test Case 03: Invalid format of Details input - Fail\r\n// {\r\n//     \"email\":\"mhuzaifa1@\",\r\n//     \"password\":\"23aljdA\",\r\n//     \"name\":\"23aljdA\"\r\n// }\r\n// Test Case 04: ALready Exsisting User - Fail\r\n// {\r\n//     \"email\":\"mhuzaifa91@gmail.com\",\r\n//     \"password\":\"23aljdA\",\r\n//     \"name\":\"23aljdA\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/register",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Test Case 0: Correct Password and Email: Pass\r\n{\r\n    \"email\":\"mhuzaifa91@gmail.com\",\r\n    \"password\":\"Huzaifa1090\"\r\n}\r\n// Test Case 1: InCorrect Password  Fail\r\n// {\r\n//     \"email\":\"mhuzaifa1@gmail.com\",\r\n//     \"password\":\"23aljdA\"\r\n// }\r\n// Test Case 2: InCorrect email and password : fail (user not found) \r\n// {\r\n//     \"email\":\"mhuzaifa1@gmail.com\",\r\n//     \"password\":\"23aljdA\"\r\n// }\r\n// Test Case 3: No email and password Provided : fail \r\n// {\r\n//     \"email\":\"\",\r\n//     \"password\":\"\"\r\n// }\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// Test Case 01: Correct Details - Pass\r\n{\r\n    \"email\": \"mhuzaifa91@gmail.com\",\r\n    \"name\": \"Huzaifa\"\r\n}\r\n// Test Case 02: Correct Details but not logged in (call logout first) - Fail\r\n// {\r\n// \"email\":\"mhuzaifa1@gmail.com\",\r\n// \"name\":\"23aljdA\"\r\n// }\r\n// Test Case 03: Invalid format of Details input - Fail\r\n// {\r\n//     \"email\":\"mhuzaifa1@\",\r\n//     \"password\":\"23aljdA\",\r\n//     \"name\":\"23aljdA\"\r\n// }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"23aljdA\",\r\n    \"newPassword\":\"Huzaifa1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/password",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// t0 : due date in past : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n\r\n// t1: same title task exsist : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n// t1: correct details pass \r\n{\r\n    \"title\": \"MYTask399\",\r\n    \"description\": \"Task\",\r\n    \"status\":\"To Do\",\r\n    \"due_date\":\"2025-03-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Task",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task/67e1367ba26ca3a367789d40",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"67e1367ba26ca3a367789d40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task by query",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task/search?due_date=2025-03-26T00:00:00.000Z&title=MYTask",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"search"
+							],
+							"query": [
+								{
+									"key": "due_date",
+									"value": "2025-03-26T00:00:00.000Z"
+								},
+								{
+									"key": "title",
+									"value": "MYTask"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// t0 : due date in past : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n\r\n// t1: same title task exsist : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n// t1: correct details pass \r\n{\r\n    \"title\": \"MYTask3989\",\r\n    \"description\": \"Task\",\r\n    \"status\":\"To Do\",\r\n    \"due_date\":\"2025-03-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task/67e1367ba26ca3a367789d40",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"67e1367ba26ca3a367789d40"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// t0 : due date in past : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n\r\n// t1: same title task exsist : fail\r\n// {\r\n//     \"title\": \"MYTask3\",\r\n//     \"description\": \"Task\",\r\n//     \"status\":\"To Do\",\r\n//     \"due_date\":\"2025-03-24\"\r\n// }\r\n// t1: correct details pass \r\n{\r\n    \"title\": \"MYTask3989\",\r\n    \"description\": \"Task\",\r\n    \"status\":\"To Do\",\r\n    \"due_date\":\"2025-03-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/task/67e1367ba26ca3a367789d40",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"67e1367ba26ca3a367789d40"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "localhost:5001",
+			"type": "default"
+		}
+	]
+}
