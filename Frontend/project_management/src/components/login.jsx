@@ -30,11 +30,11 @@ const Login = () => {
       );
 
       if (response) {
-        setIsAuthenticated(true);
+        // setIsAuthenticated(true);
         setUser(response.data.data.user);
         console.log(response.data.data.user);
         // navigate("/dashboard");
-        // alert("Login Successful");
+        alert("Login Successful");
         // localStorage.setItem("access-token", response.data.data.user.token);
         // localStorage.setItem("refresh-token", response.data.data.user.refresh_token);
         // console.log(response.data.data.user);
