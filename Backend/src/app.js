@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5001", "http://localhost:5173"],
+    origin: ["https://project-management-tool-oq8ty3azb.vercel.app", "https://project-management-tool-khtm.vercel.app"],
     credentials: true,
   })
 );
