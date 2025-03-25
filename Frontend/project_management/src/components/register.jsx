@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../Auth/axios_instance/axios";
 
 const Register = () => {
   const {
@@ -21,7 +22,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         import.meta.env.VITE_BACKEND + "/api/v1/user/",
         data,
         { withCredentials: true }

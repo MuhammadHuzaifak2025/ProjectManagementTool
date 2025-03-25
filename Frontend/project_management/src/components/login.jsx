@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../Auth/context/AuthContext";
+import axiosInstance from "../Auth/axios_instance/axios";
 
 const Login = () => {
 
@@ -22,7 +23,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         import.meta.env.VITE_BACKEND + "/api/v1/user/login",
         data,
         { withCredentials: true }
@@ -31,7 +32,9 @@ const Login = () => {
       if (response) {
         navigate("/dashboard");
         setIsAuthenticated(true);
-        setUser(response.data.user);
+        setUser(response.data.data.user);
+        localStorage.setItem("access-token", response.data.data.token);
+        localStorage.setItem("refresh-token", response.data.data.refresh_token);
         alert("Login Successful");
       } else {
         setError("apiError", { message: "Invalid credentials" });

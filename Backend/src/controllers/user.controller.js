@@ -77,7 +77,8 @@ const login = asynchandler(async (req, res, next) => {
   res.cookie("access-token", token, { httpOnly: true });
   res.cookie("refresh-token", refresh_token, { httpOnly: true });
   user.password = undefined;
-  user.refresh_token = undefined;
+
+  user.access_token = token;
   return res.status(200).json(
     new ApiResponse(200, {
       message: "User logged in successfully",
@@ -122,7 +123,7 @@ const updateUser = asynchandler(async (req, res, next) => {
           .map((err) => err.msg)
           .join(", ")
       )
-    ); 
+    );
   }
 
   user.name = name;
@@ -134,9 +135,9 @@ const updateUser = asynchandler(async (req, res, next) => {
       message: "User updated successfully",
       data: user,
     })
-  ); 
+  );
 });
- 
+
 const updatePassword = asynchandler(async (req, res, next) => {
   try {
     const user = req.user;

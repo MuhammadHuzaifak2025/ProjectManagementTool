@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react'
 import AddTaskDialog from './add-task'
 import UpdateTaskDialog from './update-task'
 import axios from 'axios'
+import axiosInstance from '../Auth/axios_instance/axios'
 
 
 const Dashboard = () => {
@@ -18,7 +19,7 @@ const Dashboard = () => {
   }
 
   const handlelogout = async () => {
-    const resp = await axios.post(import.meta.env.VITE_BACKEND + "/api/v1/user/logout", {}, { withCredentials: true })
+    const resp = await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/user/logout", {}, { withCredentials: true })
     if (resp) {
       alert("Logout Successful");
       window.location.reload()

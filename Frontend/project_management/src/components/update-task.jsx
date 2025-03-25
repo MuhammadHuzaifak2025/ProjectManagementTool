@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Trash2 } from "lucide-react"
 import axios from "axios"
 import { toast } from "react-toastify";
+import axiosInstance from "../Auth/axios_instance/axios"
 const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
@@ -41,7 +42,7 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
         setIsSubmitting(true)
 
         try {
-            await axios.put(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, formData, { withCredentials: true })
+            await axiosInstance.put(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, formData, { withCredentials: true })
 
         
             onOpenChange(false)
@@ -64,7 +65,7 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
         setIsDeleting(true)
 
         try {
-            await axios.delete(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, { withCredentials: true })
+            await axiosInstance.delete(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, { withCredentials: true })
 
             // Close dialog
             onOpenChange(false)

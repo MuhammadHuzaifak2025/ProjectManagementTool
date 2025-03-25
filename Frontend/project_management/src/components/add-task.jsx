@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import axios from "axios"
 import { toast } from "react-toastify";
+import axiosInstance from "../Auth/axios_instance/axios"
 
 const AddTaskDialog = ({ open, onOpenChange }) => {
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -32,7 +33,7 @@ const AddTaskDialog = ({ open, onOpenChange }) => {
         setIsSubmitting(true)
 
         try {
-            await axios.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formData, { withCredentials: true })
+            await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formData, { withCredentials: true })
 
             // Reset form
             setFormData({

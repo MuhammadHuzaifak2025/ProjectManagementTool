@@ -4,6 +4,7 @@ import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Edit, Clock, CheckCircle, Circle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import axiosInstance from "../Auth/axios_instance/axios"
 
 const KanbanBoard = ({ onUpdateTask }) => {
     const [tasks, setTasks] = useState([])
@@ -13,7 +14,7 @@ const KanbanBoard = ({ onUpdateTask }) => {
         const fetchTasks = async () => {
             setIsLoading(true)
             try {
-                const response = await axios.get(import.meta.env.VITE_BACKEND + "/api/v1/task", {
+                const response = await axiosInstance.get(import.meta.env.VITE_BACKEND + "/api/v1/task", {
                     withCredentials: true,
                 })
                 setTasks(response.data.data || [])
@@ -50,7 +51,7 @@ const KanbanBoard = ({ onUpdateTask }) => {
         setTasks(newTasks)
 
         try {
-            await axios.put(
+            await axiosInstance.put(
                 import.meta.env.VITE_BACKEND + `/api/v1/task/${movedTask._id}`,
                 { status: movedTask.status },
                 { withCredentials: true },
