@@ -28,13 +28,17 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Task Management Dashboard</h1>
-          <Button onClick={() => setIsAddTaskOpen(true)} className="bg-primary hover:bg-primary/90">
-            <Plus className="mr-2 h-4 w-4" /> Add New Task
-          </Button>
-          <Button onClick={() => handlelogout()} className="bg-primary hover:bg-primary/90">
-            <Plus className="mr-2 h-4 w-4" /> Logout Task
-          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800">Task Management Dashboard</h1>
+          </div>
+          <div>
+            <Button onClick={() => setIsAddTaskOpen(true)} className="bg-primary hover:bg-primary/90 ">
+              <Plus className="mr-2 h-4 w-4" /> Add New Task
+            </Button>
+            <Button onClick={() => handlelogout()} className="bg-red-500 hover:bg-bg-red-50 ml-3">
+              <Plus className="mr-2 h-4 w-4" /> Logout
+            </Button>
+          </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
