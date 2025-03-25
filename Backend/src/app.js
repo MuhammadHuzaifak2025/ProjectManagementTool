@@ -4,7 +4,7 @@ import cors from "cors";
 import {
   ErrorHandlerMiddleWare,
   ServerErrorMiddleWare,
-} from "./middlewares/globalerror.js";
+} from "./middlewares/GlobalError.js";
 
 const app = express();
 
