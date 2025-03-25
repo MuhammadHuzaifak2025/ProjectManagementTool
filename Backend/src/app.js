@@ -13,7 +13,8 @@ app.use(
     origin: [
       "https://projectmanagementtool-lzok.onrender.com",
       "https://projectmanagementtool-2.onrender.com",
-      "https://project-management-tool-pi.vercel.app",,
+      "https://project-management-tool-pi.vercel.app",
+      "https://project-management-tool-khtm.vercel.app/",
     ],
     credentials: true,
   })
