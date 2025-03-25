@@ -19,7 +19,7 @@ function App() {
 
   const authenticate = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/v1/user/", {
+      const response = await axios.get(import.meta.env.VITE_BACKEND + "/api/v1/user/", {
         withCredentials: true,
       });
 
