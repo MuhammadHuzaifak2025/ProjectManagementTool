@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Trash2 } from "lucide-react"
 import axios from "axios"
 import { toast } from "react-toastify";
-import axiosInstance from "../Auth/axios_instance/axios"
+import axiosInstance from "../Auth/axios_instance/axios.js"
 import settoken from "../Auth/axios_instance/token"
 const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
     const token = localStorage.getItem("access-token");
