@@ -33,8 +33,9 @@ const Login = () => {
         navigate("/dashboard");
         setIsAuthenticated(true);
         setUser(response.data.data.user);
-        localStorage.setItem("access-token", response.data.data.token);
-        localStorage.setItem("refresh-token", response.data.data.refresh_token);
+        localStorage.setItem("access-token", response.data.data.user.token);
+        localStorage.setItem("refresh-token", response.data.data.user.refresh_token);
+        console.log(response.data.data.user);
         alert("Login Successful");
       } else {
         setError("apiError", { message: "Invalid credentials" });
