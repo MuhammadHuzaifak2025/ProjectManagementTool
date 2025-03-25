@@ -1,9 +1,137 @@
-import React from 'react'
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const register = () => {
+const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm();
+
+  const navigate = useNavigate();
+  const password = watch("password");
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/v1/auth/register",
+        data,
+        { withCredentials: true }
+      );
+
+      if (response.data.StatusCode === 201) {
+        navigate("/dashboard"); // Redirect after successful registration
+      } else {
+        setError("apiError", { message: "Registration failed. Try again." });
+      }
+    } catch (err) {
+      setError("apiError", { message: "Registration failed. Please try again." });
+    }
+  };
+
   return (
-    <div>register</div>
-  )
-}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md p-6 shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-xl text-center">Register</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Name Field */}
+            <div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Enter your name"
+                {...register("name", { required: "Name is required" })}
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name.message}</p>
+              )}
+            </div>
 
-export default register
+            {/* Email Field */}
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Please enter a valid email",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Confirm Password Field */}
+            <div>
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm your password"
+                {...register("confirmPassword", {
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
+                })}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            {/* API Error Handling */}
+            {errors.apiError && (
+              <p className="text-red-500 text-sm">{errors.apiError.message}</p>
+            )}
+
+            {/* Submit Button */}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Registering..." : "Register"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Register;
