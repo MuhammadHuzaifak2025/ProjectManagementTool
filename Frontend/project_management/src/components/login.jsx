@@ -33,9 +33,11 @@ const Login = () => {
         navigate("/dashboard");
         setIsAuthenticated(true);
         setUser(response.data.data.user);
+        console.log(response.data.data.user);
         localStorage.setItem("access-token", response.data.data.user.token);
         localStorage.setItem("refresh-token", response.data.data.user.refresh_token);
         console.log(response.data.data.user);
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${response.data.data.user.token}`;
         alert("Login Successful");
       } else {
         setError("apiError", { message: "Invalid credentials" });
