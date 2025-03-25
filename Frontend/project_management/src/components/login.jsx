@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import useAuth from "../Auth/context/AuthContext";
 
 const Login = () => {
 
@@ -15,24 +16,29 @@ const Login = () => {
     formState: { errors, isSubmitting },
     setError,
   } = useForm();
-
+  const { setIsAuthenticated, setUser } = useAuth();
   const navigate = useNavigate();
 
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/v1/auth/login",
+        import.meta.env.VITE_BACKEND + "/api/v1/user/login",
         data,
         { withCredentials: true }
       );
 
-      if (response.data.StatusCode === 200) {
+      if (response) {
         navigate("/dashboard");
+        setIsAuthenticated(true);
+        setUser(response.data.user);
+        alert("Login Successful");
       } else {
         setError("apiError", { message: "Invalid credentials" });
       }
     } catch (err) {
+      console.log(err);
+      isSubmitting(false);
       setError("apiError", { message: "Login failed. Please try again." });
     }
   };
@@ -46,7 +52,7 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="pb-1">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -65,14 +71,24 @@ const Login = () => {
             </div>
 
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="pb-1">Password</Label>
               <Input
                 id="password"
                 type="password"
                 placeholder="Enter your password"
                 {...register("password", {
                   required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters long",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*\d).{6,}$/,
+                    message:
+                      "Password must contain at least one uppercase letter and one number",
+                  },
                 })}
+
               />
               {errors.password && (
                 <p className="text-red-500 text-sm">{errors.password.message}</p>
@@ -87,6 +103,9 @@ const Login = () => {
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
+          <p className="text-center mt-4">
+            Don't have an account? <a href="/Signup" className="text-blue-500">Register</a>
+          </p>
         </CardContent>
       </Card>
     </div>

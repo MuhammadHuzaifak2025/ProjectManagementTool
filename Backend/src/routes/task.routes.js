@@ -15,16 +15,19 @@ const TaskRouter = Router();
 
 const validateTask = [
   body("title")
+    .optional()
     .isString()
     .withMessage("Title must be a string")
     .isLength({ min: 3, max: 50 })
     .withMessage("Title must be between 3 and 50 characters"),
   body("description")
+    .optional()
     .isString()
     .withMessage("Description must be a string")
     .isLength({ min: 3, max: 100 })
     .withMessage("Description must be between 3 and 100 characters"),
   body("status")
+    .optional()
     .isString()
     .withMessage("Status must be a string")
     .isIn(["To Do", "In Progress", "Done"])

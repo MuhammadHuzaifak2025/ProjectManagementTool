@@ -22,7 +22,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/v1/auth/register",
+        import.meta.env.VITE_BACKEND + "/api/v1/user/",
         data,
         { withCredentials: true }
       );
@@ -47,7 +47,7 @@ const Register = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Name Field */}
             <div>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name" className="pb-1">Name</Label>
               <Input
                 id="name"
                 placeholder="Enter your name"
@@ -60,7 +60,7 @@ const Register = () => {
 
             {/* Email Field */}
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="pb-1">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -80,7 +80,7 @@ const Register = () => {
 
             {/* Password Field */}
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="pb-1">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -89,7 +89,12 @@ const Register = () => {
                   required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 6 characters",
+                    message: "Password must be at least 6 characters long",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*\d).{6,}$/,
+                    message:
+                      "Password must contain at least one uppercase letter and one number",
                   },
                 })}
               />
@@ -100,7 +105,7 @@ const Register = () => {
 
             {/* Confirm Password Field */}
             <div>
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="pb-1">Confirm Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -128,6 +133,9 @@ const Register = () => {
               {isSubmitting ? "Registering..." : "Register"}
             </Button>
           </form>
+          <p className="text-center mt-4">
+            Don't have an account? <a href="/login" className="text-blue-500">Login</a>
+          </p>
         </CardContent>
       </Card>
     </div>

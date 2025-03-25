@@ -90,13 +90,27 @@ export const updateTask = asynchandler(async (req, res, next) => {
   if (!taskExists) {
     throw new ApiError(404, "Task not found");
   }
-  const checktitlealreadyexists = await Task.findOne({ title });
-  if (checktitlealreadyexists) {
-    throw new ApiError(400, "Task with same title already exists");
+  let updatedFields = {};
+
+  if (title) {
+    const checkTitleExists = await Task.findOne({ title });
+    if (checkTitleExists) {
+      throw new ApiError(400, "Task with the same title already exists");
+    }
+    updatedFields.title = title;
   }
+
+  if (description) updatedFields.description = description;
+  if (status) updatedFields.status = status;
+  if (due_date) updatedFields.due_date = due_date;
+
+  if (Object.keys(updatedFields).length === 0) {
+    throw new ApiError(400, "No valid fields provided for update");
+  }
+
   const updatedTask = await Task.findByIdAndUpdate(
     req.params.id,
-    { title, description, status, due_date },
+    updatedFields,
     { new: true, runValidators: true }
   );
 
