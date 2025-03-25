@@ -11,8 +11,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://project-management-tool-oq8ty3azb.vercel.app",
-      "https://project-management-tool-khtm.vercel.app",
+      "https://projectmanagementtool-lzok.onrender.com",
+      "https://projectmanagementtool-2.onrender.com",
       "https://project-management-tool-pi.vercel.app",,
     ],
     credentials: true,
