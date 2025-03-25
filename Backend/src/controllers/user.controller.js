@@ -74,15 +74,15 @@ const login = asynchandler(async (req, res, next) => {
   user.refresh_token = refresh_token;
   await user.save();
 
+  user.access_token = token;
   res.cookie("access-token", token, { httpOnly: true });
   res.cookie("refresh-token", refresh_token, { httpOnly: true });
   user.password = undefined;
 
-  user.access_token = token;
   return res.status(200).json(
     new ApiResponse(200, {
       message: "User logged in successfully",
-      data: user,
+      data: { user, token, refresh_token },
     })
   );
 });
@@ -102,7 +102,7 @@ const getUser = asynchandler(async (req, res, next) => {
   return res.status(200).json(
     new ApiResponse(200, {
       message: "User details",
-      data: user,
+      user,
     })
   );
 });

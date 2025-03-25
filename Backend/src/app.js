@@ -14,7 +14,9 @@ app.use(
       "https://projectmanagementtool-lzok.onrender.com",
       "https://projectmanagementtool-2.onrender.com",
       "https://project-management-tool-pi.vercel.app",
-      "https://project-management-tool-khtm.vercel.app/",
+      "https://project-management-tool-khtm.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:5001",
     ],
     credentials: true,
   })

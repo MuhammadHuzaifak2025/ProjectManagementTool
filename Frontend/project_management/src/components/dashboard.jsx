@@ -9,6 +9,7 @@ import axiosInstance from '../Auth/axios_instance/axios'
 
 
 const Dashboard = () => {
+  
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
   const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false)
   const [currentTask, setCurrentTask] = useState(null)
@@ -19,10 +20,18 @@ const Dashboard = () => {
   }
 
   const handlelogout = async () => {
-    const resp = await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/user/logout", {}, { withCredentials: true })
+    const token = localStorage.getItem("access-token");
+    const resp = await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/user/logout", {}, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (resp) {
       alert("Logout Successful");
+      localStorage.removeItem("access-token");
       window.location.reload()
+
     }
   }
   return (

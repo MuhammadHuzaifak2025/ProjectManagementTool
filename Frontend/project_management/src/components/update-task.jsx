@@ -9,7 +9,9 @@ import { Trash2 } from "lucide-react"
 import axios from "axios"
 import { toast } from "react-toastify";
 import axiosInstance from "../Auth/axios_instance/axios"
+import settoken from "../Auth/axios_instance/token"
 const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
+    const token = localStorage.getItem("access-token");
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
     const [formData, setFormData] = useState({
@@ -42,9 +44,14 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
         setIsSubmitting(true)
 
         try {
-            await axiosInstance.put(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, formData, { withCredentials: true })
+            await axiosInstance.put(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, formData, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
 
-        
+
             onOpenChange(false)
 
 
@@ -65,7 +72,12 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
         setIsDeleting(true)
 
         try {
-            await axiosInstance.delete(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, { withCredentials: true })
+            await axiosInstance.delete(import.meta.env.VITE_BACKEND + `/api/v1/task/${task._id}`, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
 
             // Close dialog
             onOpenChange(false)

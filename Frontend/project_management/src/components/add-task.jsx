@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import axiosInstance from "../Auth/axios_instance/axios"
 
 const AddTaskDialog = ({ open, onOpenChange }) => {
+    const token = localStorage.getItem("access-token");
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formData, setFormData] = useState({
         title: "",
@@ -33,7 +34,13 @@ const AddTaskDialog = ({ open, onOpenChange }) => {
         setIsSubmitting(true)
 
         try {
-            await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formData, { withCredentials: true })
+            await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formData, {
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            })
 
             // Reset form
             setFormData({
@@ -54,8 +61,8 @@ const AddTaskDialog = ({ open, onOpenChange }) => {
             window.location.reload()
         } catch (error) {
             console.error("Error creating task:", error)
-
-            toast.error("Failed to create task. Please try again.")
+            toast.error(error.response.data.message || "Failed to create task. Please try again.")
+            // toast.error("Failed to create task. Please try again.")
         } finally {
             setIsSubmitting(false)
         }

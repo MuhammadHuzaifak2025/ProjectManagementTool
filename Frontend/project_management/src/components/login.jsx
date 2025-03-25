@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../Auth/context/AuthContext";
 import axiosInstance from "../Auth/axios_instance/axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
 
@@ -16,6 +17,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
+    reset 
   } = useForm();
   const { setIsAuthenticated, setUser } = useAuth();
   const navigate = useNavigate();
@@ -28,26 +30,27 @@ const Login = () => {
         data,
         { withCredentials: true }
       );
-
+  
       if (response) {
-        // setIsAuthenticated(true);
-        setUser(response.data.data.user);
-        console.log(response.data.data.user);
-        // navigate("/dashboard");
-        alert("Login Successful");
-        // localStorage.setItem("access-token", response.data.data.user.token);
-        // localStorage.setItem("refresh-token", response.data.data.user.refresh_token);
-        // console.log(response.data.data.user);
-        // axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${response.data.data.user.token}`;
+        alert("Login successful");
+        setUser(response.data.data.data.user);
+        localStorage.setItem("access-token", response.data.data.data.token);
+        localStorage.setItem("refresh-token", response.data.data.data.refresh_token);
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${response.data.data.data.token}`;
+        setIsAuthenticated(true);
+        navigate("/dashboard");
       } else {
         setError("apiError", { message: "Invalid credentials" });
       }
     } catch (err) {
       console.log(err);
-      isSubmitting(false);
+      toast.error(err.response.data.message);
       setError("apiError", { message: "Login failed. Please try again." });
+    } finally {
+      reset({}, { keepValues: true }); // ✅ Reset form state but keep input values
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

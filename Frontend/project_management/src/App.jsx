@@ -19,8 +19,12 @@ function App() {
 
   const authenticate = async () => {
     try {
+      const token = localStorage.getItem("access-token");
       const response = await axios.get(import.meta.env.VITE_BACKEND + "/api/v1/user/", {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.data.StatusCode === 200) {

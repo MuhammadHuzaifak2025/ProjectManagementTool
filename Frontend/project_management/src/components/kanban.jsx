@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
-import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Edit, Clock, CheckCircle, Circle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import axiosInstance from "../Auth/axios_instance/axios"
 
 const KanbanBoard = ({ onUpdateTask }) => {
+
     const [tasks, setTasks] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -14,8 +14,12 @@ const KanbanBoard = ({ onUpdateTask }) => {
         const fetchTasks = async () => {
             setIsLoading(true)
             try {
+                const token = localStorage.getItem("access-token");
                 const response = await axiosInstance.get(import.meta.env.VITE_BACKEND + "/api/v1/task", {
                     withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 })
                 setTasks(response.data.data || [])
             } catch (error) {
@@ -51,10 +55,16 @@ const KanbanBoard = ({ onUpdateTask }) => {
         setTasks(newTasks)
 
         try {
+            const token = localStorage.getItem("access-token");
             await axiosInstance.put(
                 import.meta.env.VITE_BACKEND + `/api/v1/task/${movedTask._id}`,
                 { status: movedTask.status },
-                { withCredentials: true },
+                {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
             )
         } catch (error) {
             console.error("Error updating task:", error)
