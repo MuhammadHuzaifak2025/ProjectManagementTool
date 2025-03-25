@@ -77,10 +77,4 @@ function App() {
     </AuthProvider>
   );
 }
-export default function Root() {
-  return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  );
-}
+export default App;
