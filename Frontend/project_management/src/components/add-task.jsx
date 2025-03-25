@@ -1,4 +1,3 @@
-"use client"
 
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
@@ -9,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import axios from "axios"
 import { toast } from "react-toastify";
-import axiosInstance from "../Auth/axios_instance/axios"
+import axiosInstance from "../Auth/axios_instance/axios.js"
 
 const AddTaskDialog = ({ open, onOpenChange }) => {
     const token = localStorage.getItem("access-token");
