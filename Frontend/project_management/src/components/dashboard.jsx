@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Plus } from 'lucide-react'
 import AddTaskDialog from './add-task'
 import UpdateTaskDialog from './update-task'
+import axios from 'axios'
+
 
 const Dashboard = () => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
@@ -15,6 +17,13 @@ const Dashboard = () => {
     setIsUpdateTaskOpen(true)
   }
 
+  const handlelogout = async () => {
+    const resp = await axios.post(import.meta.env.VITE_BACKEND + "/api/v1/user/logout", {}, { withCredentials: true })
+    if (resp) {
+      alert("Logout Successful");
+      window.location.reload()
+    }
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -23,21 +32,24 @@ const Dashboard = () => {
           <Button onClick={() => setIsAddTaskOpen(true)} className="bg-primary hover:bg-primary/90">
             <Plus className="mr-2 h-4 w-4" /> Add New Task
           </Button>
+          <Button onClick={() => handlelogout()} className="bg-primary hover:bg-primary/90">
+            <Plus className="mr-2 h-4 w-4" /> Logout Task
+          </Button>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-md p-6">
           <KanbanBoard onUpdateTask={handleOpenUpdateTask} />
         </div>
       </div>
 
-      <AddTaskDialog 
-        open={isAddTaskOpen} 
-        onOpenChange={setIsAddTaskOpen} 
+      <AddTaskDialog
+        open={isAddTaskOpen}
+        onOpenChange={setIsAddTaskOpen}
       />
-      
+
       {currentTask && (
-        <UpdateTaskDialog 
-          open={isUpdateTaskOpen} 
+        <UpdateTaskDialog
+          open={isUpdateTaskOpen}
           onOpenChange={setIsUpdateTaskOpen}
           task={currentTask}
         />
