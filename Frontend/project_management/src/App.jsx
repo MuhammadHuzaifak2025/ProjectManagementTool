@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import login from "./components/login";
-import register from "./components/register";
+import Login from "./components/login";
+import Register from "./components/register";
 import Dashboard from "./components/dashboard";
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { AuthProvider } from './Auth/context/AuthContext';
@@ -63,8 +63,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         {/* Public Routes */}
-        <Route path="/login" element={<Account Component={login} />} />
-        <Route path="/signup" element={<Account Component={register} />} />
+        <Route path="/login" element={<Account Component={Login} />} />
+        <Route path="/signup" element={<Account Component={Register} />} />
 
         {/* Protected Routes */}
 
