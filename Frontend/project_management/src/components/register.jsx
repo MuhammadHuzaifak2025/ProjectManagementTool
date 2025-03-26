@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import axiosInstance from "../Auth/axios_instance/axios";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const {
@@ -15,6 +16,7 @@ const Register = () => {
     watch,
     formState: { errors, isSubmitting },
     setError,
+    reset
   } = useForm();
 
   const navigate = useNavigate();
@@ -23,18 +25,22 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axiosInstance.post(
-        import.meta.env.VITE_BACKEND + "/api/v1/user/",
+        import.meta.env.VITE_BACKEND + "/api/v1/user/register",
         data,
         { withCredentials: true }
       );
 
-      if (response.data.StatusCode === 201) {
-        navigate("/dashboard"); // Redirect after successful registration
+      if (response) {
+        navigate("/login"); // Redirect after successful registration
       } else {
         setError("apiError", { message: "Registration failed. Try again." });
       }
     } catch (err) {
+      toast.error(err.response.data.message);
       setError("apiError", { message: "Registration failed. Please try again." });
+    }
+    finally {
+      reset({}, { keepValues: true }); 
     }
   };
 

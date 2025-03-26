@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Edit, Clock, CheckCircle, Circle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import axiosInstance from "../Auth/axios_instance/axios"
+import { toast } from "react-toastify"
 
 const KanbanBoard = ({ onUpdateTask }) => {
 
@@ -24,6 +25,7 @@ const KanbanBoard = ({ onUpdateTask }) => {
                 setTasks(response.data.data || [])
             } catch (error) {
                 console.error("Error fetching tasks:", error)
+                toast.error(error.response?.data?.message || "Failed to fetch tasks. Please try again.")
                 setTasks([])
             } finally {
                 setIsLoading(false)
@@ -68,6 +70,7 @@ const KanbanBoard = ({ onUpdateTask }) => {
             )
         } catch (error) {
             console.error("Error updating task:", error)
+            toast.error(error.response?.data?.message || "Failed to update task. Please try again.")
             // Revert to original tasks if the API call fails
             setTasks(updatedTasks)
         }

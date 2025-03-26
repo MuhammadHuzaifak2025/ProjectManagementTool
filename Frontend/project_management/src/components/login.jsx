@@ -17,7 +17,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-    reset 
+    reset
   } = useForm();
   const { setIsAuthenticated, setUser } = useAuth();
   const navigate = useNavigate();
@@ -30,9 +30,10 @@ const Login = () => {
         data,
         { withCredentials: true }
       );
-  
+
       if (response) {
-        alert("Login successful");
+        // alert("Login successful");
+        toast.success("Login successful");
         setUser(response.data.data.data.user);
         localStorage.setItem("access-token", response.data.data.data.token);
         localStorage.setItem("refresh-token", response.data.data.data.refresh_token);
@@ -44,13 +45,13 @@ const Login = () => {
       }
     } catch (err) {
       console.log(err);
-      toast.error(err.response.data.message);
+      toast.error(err?.response?.data?.message || "Login failed. Please try again.");
       setError("apiError", { message: "Login failed. Please try again." });
     } finally {
       reset({}, { keepValues: true }); // ✅ Reset form state but keep input values
     }
   };
-  
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

@@ -1,67 +1,70 @@
+import { Form } from "@/components/ui/form"
 
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import axios from "axios"
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
 import axiosInstance from "../Auth/axios_instance/axios.js"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { CalendarIcon } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from "date-fns"
+import { cn } from "@/lib/utils"
 
 const AddTaskDialog = ({ open, onOpenChange }) => {
-    const token = localStorage.getItem("access-token");
+    const token = localStorage.getItem("access-token")
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        status: "To Do",
+
+    const form = useForm({
+        defaultValues: {
+            title: "",
+            description: "",
+            status: "To Do",
+            due_date: new Date(),
+        },
     })
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
-    }
-
-    const handleStatusChange = (value) => {
-        setFormData((prev) => ({ ...prev, status: value }))
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const onSubmit = async (data) => {
         setIsSubmitting(true)
 
         try {
-            await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formData, {
+            // Format the date to ISO string for the API
+            const formattedData = {
+                ...data,
+                due_date: data.due_date.toISOString().split("T")[0],
+            }
+
+            await axiosInstance.post(import.meta.env.VITE_BACKEND + "/api/v1/task", formattedData, {
                 withCredentials: true,
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-
             })
 
             // Reset form
-            setFormData({
+            form.reset({
                 title: "",
                 description: "",
                 status: "To Do",
+                due_date: new Date(),
             })
 
             // Close dialog
             onOpenChange(false)
 
             // Show success message
-
             toast.success("Task created successfully")
-
 
             // Refresh the page to get updated tasks
             window.location.reload()
         } catch (error) {
             console.error("Error creating task:", error)
-            toast.error(error.response.data.message || "Failed to create task. Please try again.")
-            // toast.error("Failed to create task. Please try again.")
+            toast.error(error.response?.data?.message || "Failed to create task. Please try again.")
         } finally {
             setIsSubmitting(false)
         }
@@ -74,54 +77,96 @@ const AddTaskDialog = ({ open, onOpenChange }) => {
                     <DialogTitle>Add New Task</DialogTitle>
                 </DialogHeader>
 
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="title">Title</Label>
-                        <Input
-                            id="title"
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+                        <FormField
+                            control={form.control}
                             name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            placeholder="Enter task title"
-                            required
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Title</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter task title" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
+                        <FormField
+                            control={form.control}
                             name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            placeholder="Enter task description"
-                            rows={4}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="Enter task description" rows={4} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="status">Status</Label>
-                        <Select value={formData.status} onValueChange={handleStatusChange}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="To Do">To Do</SelectItem>
-                                <SelectItem value="In Progress">In Progress</SelectItem>
-                                <SelectItem value="Done">Done</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                        <FormField
+                            control={form.control}
+                            name="status"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Status</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select status" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="To Do">To Do</SelectItem>
+                                            <SelectItem value="In Progress">In Progress</SelectItem>
+                                            <SelectItem value="Done">Done</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                    <DialogFooter className="mt-6">
-                        <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Creating..." : "Create Task"}
-                        </Button>
-                    </DialogFooter>
-                </form>
+                        <FormField
+                            control={form.control}
+                            name="due_date"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Due Date</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                                                >
+                                                    {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0" align="start">
+                                            <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus disabled={(date) => date < new Date()} />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <DialogFooter className="mt-6">
+                            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Creating..." : "Create Task"}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
             </DialogContent>
         </Dialog>
     )

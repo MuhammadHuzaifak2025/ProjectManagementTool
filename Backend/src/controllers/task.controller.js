@@ -32,8 +32,8 @@ export const createTask = asynchandler(async (req, res, next) => {
   const { title, description, status, due_date } = req.body;
   const task_with_same_title = await Task.findOne({ title });
 
-  if (task_with_same_title)
-    throw new ApiError(400, "Task with same title already exists");
+  // if (task_with_same_title)
+  //   throw new ApiError(400, "Task with same title already exists");
 
   const user = req.user;
   const task = await Task.create({ title, description, status, due_date });
