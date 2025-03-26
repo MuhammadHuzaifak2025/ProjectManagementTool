@@ -5,8 +5,9 @@ import { Edit, Clock, CheckCircle, Circle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import axiosInstance from "../Auth/axios_instance/axios"
 import { toast } from "react-toastify"
+import { set } from "mongoose"
 
-const KanbanBoard = ({ onUpdateTask }) => {
+const KanbanBoard = ({ onUpdateTask, refresh, setRefresh }) => {
 
     const [tasks, setTasks] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -29,11 +30,12 @@ const KanbanBoard = ({ onUpdateTask }) => {
                 setTasks([])
             } finally {
                 setIsLoading(false)
+                setRefresh(false)
             }
         }
 
         fetchTasks()
-    }, [])
+    }, [refresh])
 
     const handleDragEnd = async (result) => {
         if (!result.destination) return

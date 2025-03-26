@@ -14,7 +14,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { format, parseISO } from "date-fns"
 import { cn } from "@/lib/utils"
 
-const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
+const UpdateTaskDialog = ({ open, onOpenChange, task, setRefresh }) => {
     const token = localStorage.getItem("access-token")
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isDeleting, setIsDeleting] = useState(false)
@@ -60,7 +60,8 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
 
             onOpenChange(false)
             toast.success("Task updated successfully")
-            window.location.reload()
+            // window.location.reload()
+            setRefresh(true)
         } catch (error) {
             console.error("Error updating task:", error)
             toast.error(error.response.data.message || "Failed to update task. Please try again.")
@@ -85,7 +86,8 @@ const UpdateTaskDialog = ({ open, onOpenChange, task }) => {
             // Close dialog
             onOpenChange(false)
             toast.success("Task deleted successfully")
-            window.location.reload()
+            // window.location.reload()
+            setRefresh(true)
         } catch (error) {
             console.error("Error deleting task:", error)
             toast.error(error.response.data.message || "Failed to delete task. Please try again.")

@@ -16,7 +16,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 
-const AddTaskDialog = ({ open, onOpenChange }) => {
+const AddTaskDialog = ({ open, onOpenChange, setRefresh }) => {
     const token = localStorage.getItem("access-token")
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -61,7 +61,7 @@ const AddTaskDialog = ({ open, onOpenChange }) => {
             toast.success("Task created successfully")
 
             // Refresh the page to get updated tasks
-            window.location.reload()
+            setRefresh(true)
         } catch (error) {
             console.error("Error creating task:", error)
             toast.error(error.response?.data?.message || "Failed to create task. Please try again.")

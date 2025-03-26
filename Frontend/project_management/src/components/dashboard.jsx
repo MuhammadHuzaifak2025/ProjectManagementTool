@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
   const [isUpdateTaskOpen, setIsUpdateTaskOpen] = useState(false)
   const [currentTask, setCurrentTask] = useState(null)
+  const [refresh, setRefreshTask] = useState(true)
 
   const handleOpenUpdateTask = (task) => {
     setCurrentTask(task)
@@ -58,13 +59,14 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
-          <KanbanBoard onUpdateTask={handleOpenUpdateTask} />
+          <KanbanBoard onUpdateTask={handleOpenUpdateTask} refresh={refresh} setRefresh={setRefreshTask} />
         </div>
       </div>
 
       <AddTaskDialog
         open={isAddTaskOpen}
         onOpenChange={setIsAddTaskOpen}
+        setRefresh={setRefreshTask}
       />
 
       {currentTask && (
@@ -72,6 +74,7 @@ const Dashboard = () => {
           open={isUpdateTaskOpen}
           onOpenChange={setIsUpdateTaskOpen}
           task={currentTask}
+          setRefresh={setRefreshTask}
         />
       )}
     </div>
